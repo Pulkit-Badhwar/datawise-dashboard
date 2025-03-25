@@ -1,7 +1,14 @@
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BarChart2, Users, Settings, Box } from 'lucide-react';
+import { NavLink } from "react-router-dom";
+import { LayoutDashboard, BarChart2, Users, Settings, Box } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+  };
+
   return (
     <aside className="sidebar">
       <div className="logo">
@@ -32,6 +39,11 @@ const Sidebar = () => {
             <NavLink to="/settings">
               <Settings />
               <span>Settings</span>
+            </NavLink>
+          </li>
+          <li onClick={handleLogout} className="nav-item">
+            <NavLink to="/login">
+              <span>Logout</span>
             </NavLink>
           </li>
         </ul>

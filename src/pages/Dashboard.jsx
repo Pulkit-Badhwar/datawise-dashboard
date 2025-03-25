@@ -1,12 +1,22 @@
-// import { BarChart, PieChat, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import React from "react";
+import SalesOverview from "../components/Dashboard/SalesOverview";
+import CategoryDistribution from "../components/Dashboard/CategoryDistribution";
 
 const data = [
-  { name: 'Jan', value: 400 },
-  { name: 'Feb', value: 300 },
-  { name: 'Mar', value: 600 },
-  { name: 'Apr', value: 800 },
-  { name: 'May', value: 500 },
+  { name: "Jan", value: 400 },
+  { name: "Feb", value: 300 },
+  { name: "Mar", value: 600 },
+  { name: "Apr", value: 800 },
+  { name: "May", value: 500 },
 ];
+
+const categoryData = [
+  { name: "Category 1", value: 35 },
+  { name: "Category 2", value: 25 },
+  { name: "Category 3", value: 20 },
+  { name: "Category 4", value: 20 },
+];
+
 
 const Dashboard = () => {
   return (
@@ -14,11 +24,12 @@ const Dashboard = () => {
       <div className="header">
         <h1>Dashboard Overview</h1>
       </div>
-      
+
       <div className="widgets-grid">
         <div className="widget">
+          <SalesOverview data={data} />
         </div>
-        
+
         <div className="widget">
           <h3>Recent Activity</h3>
           <div className="activity-feed">
@@ -30,19 +41,9 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-        
+
         <div className="widget">
-          <h3>Quick Stats</h3>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <p className="stat-value">1,234</p>
-              <p className="stat-label">Total Users</p>
-            </div>
-            <div className="stat-item">
-              <p className="stat-value">$45,678</p>
-              <p className="stat-label">Revenue</p>
-            </div>
-          </div>
+          <CategoryDistribution categoryData={categoryData} />
         </div>
       </div>
     </div>

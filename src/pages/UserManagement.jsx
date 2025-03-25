@@ -1,27 +1,18 @@
 import React, { useState } from "react";
 
-// interface UserForm {
-//   name: string;
-//   email: string;
-//   number: string;
-//   role: string;
-// }
-
 const UserManagement = () => {
-  const [formData, setFormData] = useState<UserForm>({
+  const [formData, setFormData] = useState({
     name: "",
     number: "",
     email: "",
     role: "user",
   });
-  const [errors, setErrors] = useState<Partial<UserForm>>({});
+
+  const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    // const newErrors: Partial<UserForm> = {};
-    console.log("form data in validdate fomr:::", formData);
-    console.log("new errors in validate form", newErrors);
-    console.log("erros", errors);
-    
+    const newErrors = {};
+
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.number) newErrors.number = "Phone Number is required";
@@ -34,24 +25,22 @@ const UserManagement = () => {
     return newErrors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
-      alert("Form submitted:");
+      alert("Form submitted");
     } else {
       setErrors(newErrors);
     }
   };
 
-  const handleChange = (
-    // e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // if (errors[name as keyof UserForm]) {
-    //   setErrors((prev) => ({ ...prev, [name]: undefined }));
-    // }
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
   };
 
   return (
@@ -90,7 +79,7 @@ const UserManagement = () => {
           <div className="form-group">
             <label htmlFor="number">Phone Number</label>
             <input
-              type="number"
+              type="text"
               id="number"
               name="number"
               value={formData.number}
