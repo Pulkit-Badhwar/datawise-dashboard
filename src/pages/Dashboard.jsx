@@ -1,24 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SalesOverview from "../components/Dashboard/SalesOverview";
 import CategoryDistribution from "../components/Dashboard/CategoryDistribution";
 
-const data = [
-  { name: "Jan", value: 400 },
-  { name: "Feb", value: 300 },
-  { name: "Mar", value: 600 },
-  { name: "Apr", value: 800 },
-  { name: "May", value: 500 },
-];
-
-const categoryData = [
-  { name: "Category 1", value: 35 },
-  { name: "Category 2", value: 25 },
-  { name: "Category 3", value: 20 },
-  { name: "Category 4", value: 20 },
-];
-
-
 const Dashboard = () => {
+  const [salesData, setSalesData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://api.exchangerate-api.com/v4/latest/USD")
+      .then((response) => response.json())
+      .then((data) => {
+        const sales = Object.entries(data.rates)
+          .slice(0, 10)
+          .map(([currency, value]) => ({
+            name: currency,
+            value: value,
+          }));
+        setSalesData(sales);
+      });
+
+    fetch("https://fakestoreapi.com/products")
+      .then((response) => response.json())
+      .then((products) => {
+        const categoryCounts = products.reduce((acc, product) => {
+          acc[product.category] = (acc[product.category] || 0) + 1;
+          return acc;
+        }, {});
+        const formattedCategories = Object.entries(categoryCounts).map(
+          ([name, value]) => ({
+            name,
+            value,
+          })
+        );
+        setCategoryData(formattedCategories);
+      });
+  }, []);
+
   return (
     <div className="dashboard">
       <div className="header">
@@ -27,7 +44,7 @@ const Dashboard = () => {
 
       <div className="widgets-grid">
         <div className="widget">
-          <SalesOverview data={data} />
+          <SalesOverview data={salesData} />
         </div>
 
         <div className="widget">
